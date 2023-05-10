@@ -18,10 +18,8 @@ export default function Admin() {
 	const login = async (data) => {
 		setIsLoading(true);
 		try {
-			const authData = await pb.admins.authWithPassword(
-				data.email,
-				data.password
-			);
+			const authData = await pb.admins.authWithPassword(data.email, data.password);
+			router.push("/admin");
 		} catch (e) {
 			alert(e);
 		}
@@ -31,9 +29,7 @@ export default function Admin() {
 	return (
 		<div className="center">
 			<div className="bg-white rounded-md p-10 text-black">
-				<h1 className="text-center font-bold text-2xl tracking-wide">
-					Login
-				</h1>
+				<h1 className="text-center font-bold text-2xl tracking-wide">Login</h1>
 				<form className="mt-10" onSubmit={handleSubmit(login)}>
 					<div className="flex flex-col justify-center my-3">
 						<label className="text-sm" htmlFor="email">
@@ -80,13 +76,7 @@ export default function Admin() {
 						</div>
 					</div>
 
-					<button
-						type="submit"
-						className={`w-full rounded-md mt-5 text-white bg-sky-600 py-2 ${
-							isLoading ? "opacity-50" : ""
-						}`}
-						disabled={isLoading}
-					>
+					<button type="submit" className={`w-full rounded-md mt-5 text-white bg-sky-600 py-2 ${isLoading ? "opacity-50" : ""}`} disabled={isLoading}>
 						Login
 					</button>
 				</form>

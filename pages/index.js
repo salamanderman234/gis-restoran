@@ -15,13 +15,11 @@ export default function Home() {
 
 	useEffect(() => {
 		const retrieve = async () => {
-			const restaurantsList = await pb
-				.collection("restaurants")
-				.getFullList({
-					sort: "created",
-					$autoCancel: false,
-					expand: "restaurant_services(restaurant).service",
-				});
+			const restaurantsList = await pb.collection("restaurants").getFullList({
+				sort: "created",
+				$autoCancel: false,
+				expand: "restaurant_services(restaurant).service, restaurant_schedules(restaurant), restaurant_photos(restaurant), menus(restaurant).menu_photos(menu)",
+			});
 			setRestaurants(restaurantsList);
 		};
 		retrieve();
@@ -35,14 +33,7 @@ export default function Home() {
 	const markerList = restaurants.map((restaurant) => {
 		const position = [restaurant.lattitude, restaurant.langitude];
 
-		return (
-			<StaticMarker
-				key={restaurant.id}
-				position={position}
-				details={restaurant}
-				setData={markerSetSelectedRestaurant}
-			/>
-		);
+		return <StaticMarker key={restaurant.id} position={position} details={restaurant} setData={markerSetSelectedRestaurant} />;
 	});
 
 	return (
