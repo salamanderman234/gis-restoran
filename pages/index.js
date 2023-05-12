@@ -2,6 +2,7 @@ import Map from "@/components/Map";
 import StaticMarker from "@/components/Map/Marker";
 import ObjectInfoModal from "@/components/Modal/ObjectInfoModal";
 import SideBar from "@/components/Navbar/SideBar";
+import Head from "next/head";
 import { pb } from "@/lib/pocketbase";
 import { Inter } from "next/font/google";
 import { useEffect, useState } from "react";
@@ -33,13 +34,16 @@ export default function Home() {
 	const markerList = restaurants.map((restaurant) => {
 		const position = [restaurant.lattitude, restaurant.langitude];
 
-		return <StaticMarker key={restaurant.id} position={position} details={restaurant} setData={markerSetSelectedRestaurant} />;
+		return <StaticMarker selected={selectedRestaurant} key={restaurant.id} position={position} details={restaurant} setData={markerSetSelectedRestaurant} />;
 	});
 
 	return (
 		<>
+			<Head>
+				<title>Sistem Informasi Geografis Restoran</title>
+			</Head>
 			<div className="flex bg-white h-screen w-screen">
-				<SideBar />
+				{/* <SideBar /> */}
 				<ObjectInfoModal details={selectedRestaurant} />
 				<div className="w-full">
 					<Map position={position}>{markerList}</Map>

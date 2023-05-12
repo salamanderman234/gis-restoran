@@ -14,13 +14,11 @@ export default function MenuCard({ data }) {
 
 	const nextImage = () => {
 		const now = currentImage + 1;
-		setCurrentImage(Math.min(now, images.length));
-		console.log(currentImage);
+		setCurrentImage(Math.min(now, images.length - 1));
 	};
 	const previousImage = () => {
 		const now = currentImage - 1;
 		setCurrentImage(Math.max(now, 0));
-		console.log(currentImage);
 	};
 
 	return (
@@ -44,7 +42,16 @@ export default function MenuCard({ data }) {
 			<div className="p-1">
 				<h2 className="font-bold mt-3 text-center">{data.name}</h2>
 				<span className="block text-sm text-slate-600 text-center">Rp. {data.price}</span>
-				<span className="block mt-1 text-center text-xs">{data.description}</span>
+				<span className="block mt-1 text-center text-xs">
+					{data.description.length > 70 ? (
+						<>
+							<span>{data.description.substring(0, 70)}</span>
+							<span>...</span>
+						</>
+					) : (
+						data.description
+					)}
+				</span>
 			</div>
 		</div>
 	);

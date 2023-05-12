@@ -23,3 +23,11 @@ export default function AdminPage() {
 		</div>
 	);
 }
+
+export async function getServerSideProps(context) {
+	const text = pb.authStore.loadFromCookie(context.cookie);
+	console.log(text);
+	return {
+		props: {},
+	};
+}

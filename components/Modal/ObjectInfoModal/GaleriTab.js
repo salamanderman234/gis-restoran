@@ -4,7 +4,7 @@ export default function GaleriTab({ details }) {
 	let photos = [];
 	if ("expand" in details) {
 		if ("restaurant_photos(restaurant)" in details.expand) {
-			photos = details.expand["restaurant_photos(restaurant)"].map((photo) => <Image className="hover:scale-150 duration-300 transition-all" src={photo.url} alt="{photo.title}" width={1000} height={1000} />);
+			photos = details.expand["restaurant_photos(restaurant)"].map((photo) => <Image className="hover:z-50 hover:scale-150 duration-300 transition-all" src={photo.url} alt="{photo.title}" width={1000} height={1000} />);
 		}
 	}
 	return (

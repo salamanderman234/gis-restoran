@@ -29,7 +29,7 @@ export default function ObjectInfoModal({ details }) {
 					<div className="w-full">
 						<Image className="w-full" src={details.banner} alt="banner" width={1000} height={1000} />
 					</div>
-					<div className="px-3 text-black max-h-full overflow-auto">
+					<div className="px-3 text-black">
 						<h1 className="mt-5 text-2xl">{details.name}</h1>
 						<span className="text-slate-500">{details.theme}</span>
 						<ul className="w-full list-disc">{services}</ul>
@@ -44,8 +44,8 @@ export default function ObjectInfoModal({ details }) {
 								Galeri
 							</li>
 						</ul>
-						{selectedMenu === "detail" ? detailTab : selectedMenu === "galeri" ? galeriTab : selectedMenu === "menu" ? menuTab : ""}
 					</div>
+					<div className="overflow-auto text-black px-5 h-full">{selectedMenu === "detail" ? detailTab : selectedMenu === "galeri" ? galeriTab : selectedMenu === "menu" ? menuTab : ""}</div>
 				</>
 			) : (
 				<>

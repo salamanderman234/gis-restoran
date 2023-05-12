@@ -27,7 +27,7 @@ export default function Admin() {
 	};
 
 	return (
-		<div className="center">
+		<div className="w-screen h-screen flex items-center justify-center bg-[url('https://static.vecteezy.com/system/resources/previews/006/986/565/large_2x/modern-simple-royal-blue-gradient-abstract-background-quotes-and-presentation-types-based-background-design-it-is-suitable-for-wallpaper-quotes-website-opening-presentation-personal-profile-etc-free-photo.jpg')]">
 			<div className="bg-white rounded-md p-10 text-black">
 				<h1 className="text-center font-bold text-2xl tracking-wide">Login</h1>
 				<form className="mt-10" onSubmit={handleSubmit(login)}>
@@ -85,7 +85,9 @@ export default function Admin() {
 	);
 }
 
-export async function getServerSideProps() {
+export async function getServerSideProps(context) {
+	const text = pb.authStore.loadFromCookie(context.cookie);
+	console.log(text);
 	return {
 		props: {},
 	};
