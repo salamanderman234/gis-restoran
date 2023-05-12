@@ -22,6 +22,7 @@ export default function Home() {
 				expand: "restaurant_services(restaurant).service, restaurant_schedules(restaurant), restaurant_photos(restaurant), menus(restaurant).menu_photos(menu)",
 			});
 			setRestaurants(restaurantsList);
+			console.log(restaurantsList);
 		};
 		retrieve();
 	}, []);
