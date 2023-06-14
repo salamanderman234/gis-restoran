@@ -2,21 +2,16 @@ import { Admin } from "pocketbase";
 import { pb } from "@/lib/pocketbase";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import Head from "next/head";
+import AdminLayout from "@/components/Layouts/admin";
 import StaticMarker from "@/components/Map/Marker";
 import ObjectInfoModal from "@/components/Modal/ObjectInfoModal";
 import ClickableMap from "@/components/Map/ClickableMap";
 
-export default function AdminPage() {
-	const router = useRouter();
+export default function MapPreview() {
 	const [position, setPosition] = useState([-8.409518, 115.188919]);
 	const [restaurants, setRestaurants] = useState([]);
 	const [selectedRestaurant, setSelectedRestaurant] = useState({});
-
-	const logout = async () => {
-		pb.authStore.clear();
-		router.push("/admin/login");
-	};
+	const router = useRouter();
 
 	useEffect(() => {
 		if (!pb.authStore.isValid || !pb.authStore.model instanceof Admin) {
@@ -34,16 +29,6 @@ export default function AdminPage() {
 		};
 		retrieve();
 	}, []);
-
-	const mapClickHandler = (position) => {
-		router.push({
-			pathname: "/admin/add",
-			query: {
-				lat: position.lat,
-				lng: position.lng,
-			},
-		});
-	};
 
 	const markerSetSelectedRestaurant = async (restaurant) => {
 		setSelectedRestaurant(restaurant);
@@ -64,21 +49,20 @@ export default function AdminPage() {
 		);
 	});
 
+	const mapClickHandler = (position) => {
+		router.push({
+			pathname: "/admin/restaurants/add/form",
+			query: {
+				lat: position.lat,
+				lng: position.lng,
+			},
+		});
+	};
+
 	return (
-		<>
-			<Head>
-				<title>Admin - Sistem Informasi Geografis Restoran</title>
-			</Head>
-			<div className="flex flex-col bg-white h-screen w-screen">
-				{/* <SideBar /> */}
-				<div className="w-screen  bg-[url('https://static.vecteezy.com/system/resources/previews/006/986/565/large_2x/modern-simple-royal-blue-gradient-abstract-background-quotes-and-presentation-types-based-background-design-it-is-suitable-for-wallpaper-quotes-website-opening-presentation-personal-profile-etc-free-photo.jpg')] text-black h-1/6 flex justify-between items-center px-10">
-					<span>asiap</span>
-					<ul className="flex">
-						<li className="mx-3">Petunjuk</li>
-						<li className="mx-3">Logout</li>
-					</ul>
-				</div>
-				<div className="flex w-full h-5/6">
+		<AdminLayout>
+			<div style={{ height: 480 }}>
+				<div className="flex w-full h-full">
 					<ObjectInfoModal details={selectedRestaurant} />
 					<div className="w-full">
 						<ClickableMap
@@ -90,12 +74,6 @@ export default function AdminPage() {
 					</div>
 				</div>
 			</div>
-		</>
+		</AdminLayout>
 	);
-}
-
-export async function getServerSideProps(context) {
-	return {
-		props: {},
-	};
 }

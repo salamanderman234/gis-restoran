@@ -1,9 +1,17 @@
 import "leaflet/dist/leaflet.css";
 import "leaflet-defaulticon-compatibility";
 import "leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.css";
-import { MapContainer, TileLayer } from "react-leaflet";
+import { MapContainer, TileLayer, useMapEvents } from "react-leaflet";
 
-export default function Map({ children, position }) {
+export default function ClickableMap({ children, position, clickHandler }) {
+	const MapHandler = () => {
+		useMapEvents({
+			click: (e) => {
+				clickHandler(e.latlng);
+			},
+		});
+		return null;
+	};
 	return (
 		<MapContainer
 			className="map"
@@ -16,6 +24,7 @@ export default function Map({ children, position }) {
 				url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
 			/>
 			{children}
+			<MapHandler />
 		</MapContainer>
 	);
 }
