@@ -19,7 +19,7 @@ export default function Admin() {
 		setIsLoading(true);
 		try {
 			const authData = await pb.admins.authWithPassword(data.email, data.password);
-			router.push("/admin");
+			router.push("/admin/restaurants");
 		} catch (e) {
 			alert(e);
 		}

@@ -5,8 +5,10 @@ import AdminLayout from "@/components/Layouts/admin";
 import StaticMarker from "@/components/Map/Marker";
 import ObjectInfoModal from "@/components/Modal/ObjectInfoModal";
 import Map from "@/components/Map";
+import { useRouter } from "next/router";
 
 export default function MapPreview() {
+	const router = useRouter();
 	const [position, setPosition] = useState([-8.409518, 115.188919]);
 	const [restaurants, setRestaurants] = useState([]);
 	const [selectedRestaurant, setSelectedRestaurant] = useState({});
@@ -16,13 +18,11 @@ export default function MapPreview() {
 			router.push("/admin/login");
 		}
 		const retrieve = async () => {
-			const restaurantsList = await pb
-				.collection("restaurants")
-				.getFullList({
-					sort: "created",
-					$autoCancel: false,
-					expand: "restaurant_services(restaurant).service, restaurant_schedules(restaurant), restaurant_photos(restaurant), menus(restaurant).menu_photos(menu)",
-				});
+			const restaurantsList = await pb.collection("restaurants").getFullList({
+				sort: "created",
+				$autoCancel: false,
+				expand: "restaurant_services(restaurant).service, restaurant_schedules(restaurant), restaurant_photos(restaurant), menus(restaurant).menu_photos(menu)",
+			});
 			setRestaurants(restaurantsList);
 		};
 		retrieve();
@@ -36,20 +36,12 @@ export default function MapPreview() {
 	const markerList = restaurants.map((restaurant) => {
 		const position = [restaurant.lattitude, restaurant.langitude];
 
-		return (
-			<StaticMarker
-				selected={selectedRestaurant}
-				key={restaurant.id}
-				position={position}
-				details={restaurant}
-				setData={markerSetSelectedRestaurant}
-			/>
-		);
+		return <StaticMarker selected={selectedRestaurant} key={restaurant.id} position={position} details={restaurant} setData={markerSetSelectedRestaurant} />;
 	});
 
 	return (
-		<AdminLayout>
-			<div style={{ height: 480 }}>
+		<AdminLayout title={"Preview"}>
+			<div style={{ height: 600 }}>
 				<div className="flex w-full h-full">
 					<ObjectInfoModal details={selectedRestaurant} />
 					<div className="w-full">

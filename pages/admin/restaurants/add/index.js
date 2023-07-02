@@ -18,13 +18,11 @@ export default function MapPreview() {
 			router.push("/admin/login");
 		}
 		const retrieve = async () => {
-			const restaurantsList = await pb
-				.collection("restaurants")
-				.getFullList({
-					sort: "created",
-					$autoCancel: false,
-					expand: "restaurant_services(restaurant).service, restaurant_schedules(restaurant), restaurant_photos(restaurant), menus(restaurant).menu_photos(menu)",
-				});
+			const restaurantsList = await pb.collection("restaurants").getFullList({
+				sort: "created",
+				$autoCancel: false,
+				expand: "restaurant_services(restaurant).service, restaurant_schedules(restaurant), restaurant_photos(restaurant), menus(restaurant).menu_photos(menu)",
+			});
 			setRestaurants(restaurantsList);
 		};
 		retrieve();
@@ -38,15 +36,7 @@ export default function MapPreview() {
 	const markerList = restaurants.map((restaurant) => {
 		const position = [restaurant.lattitude, restaurant.langitude];
 
-		return (
-			<StaticMarker
-				selected={selectedRestaurant}
-				key={restaurant.id}
-				position={position}
-				details={restaurant}
-				setData={markerSetSelectedRestaurant}
-			/>
-		);
+		return <StaticMarker selected={selectedRestaurant} key={restaurant.id} position={position} details={restaurant} setData={markerSetSelectedRestaurant} />;
 	});
 
 	const mapClickHandler = (position) => {
@@ -60,15 +50,12 @@ export default function MapPreview() {
 	};
 
 	return (
-		<AdminLayout>
+		<AdminLayout title={"Pilih lokasi"}>
 			<div style={{ height: 480 }}>
 				<div className="flex w-full h-full">
 					<ObjectInfoModal details={selectedRestaurant} />
 					<div className="w-full">
-						<ClickableMap
-							position={position}
-							clickHandler={mapClickHandler}
-						>
+						<ClickableMap position={position} clickHandler={mapClickHandler}>
 							{markerList}
 						</ClickableMap>
 					</div>

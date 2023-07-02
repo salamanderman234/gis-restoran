@@ -4,12 +4,12 @@ import { useMemo } from "react";
 
 export default function StaticMarker({ position, details, setData, selected }) {
 	const defaultIcon = new Icon({
-		iconUrl: "/icons/restaurant.png",
+		iconUrl: "http://localhost:3000/icons/restaurant.png",
 		iconSize: new Point(40, 40),
 	});
 
 	const selectedIcon = new Icon({
-		iconUrl: "icons/selected-icon.png",
+		iconUrl: "http://localhost:3000/icons/selected-icon.png",
 		iconSize: new Point(55, 55),
 	});
 

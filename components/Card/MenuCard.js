@@ -10,7 +10,7 @@ export default function MenuCard({ data }) {
 			images = data.expand["menu_photos(menu)"].map((image) => <Image className="rounded-t-md" src={image.url} width={1000} height={1000} alt={image.title} />);
 		}
 	}
-	images.unshift(<Image className="rounded-t-md" src={data.banner} width={1000} height={1000} alt="banner" />);
+	images.unshift(<Image className="rounded-t-md" src={`https://gis-restoran.pockethost.io/api/files/menus/${data.id}/${data.image}`} width={1000} height={1000} alt="banner" />);
 
 	const nextImage = () => {
 		const now = currentImage + 1;

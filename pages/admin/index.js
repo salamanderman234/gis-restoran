@@ -19,21 +19,20 @@ export default function AdminPage() {
 	};
 
 	useEffect(() => {
+		console.log(router);
 		if (!pb.authStore.isValid || !pb.authStore.model instanceof Admin) {
 			router.push("/admin/login");
 		}
 		const retrieve = async () => {
-			const restaurantsList = await pb
-				.collection("restaurants")
-				.getFullList({
-					sort: "created",
-					$autoCancel: false,
-					expand: "restaurant_services(restaurant).service, restaurant_schedules(restaurant), restaurant_photos(restaurant), menus(restaurant).menu_photos(menu)",
-				});
+			const restaurantsList = await pb.collection("restaurants").getFullList({
+				sort: "created",
+				$autoCancel: false,
+				expand: "restaurant_services(restaurant).service, restaurant_schedules(restaurant), restaurant_photos(restaurant), menus(restaurant).menu_photos(menu)",
+			});
 			setRestaurants(restaurantsList);
 		};
 		retrieve();
-	}, []);
+	}, [router]);
 
 	const mapClickHandler = (position) => {
 		router.push({
@@ -53,15 +52,7 @@ export default function AdminPage() {
 	const markerList = restaurants.map((restaurant) => {
 		const position = [restaurant.lattitude, restaurant.langitude];
 
-		return (
-			<StaticMarker
-				selected={selectedRestaurant}
-				key={restaurant.id}
-				position={position}
-				details={restaurant}
-				setData={markerSetSelectedRestaurant}
-			/>
-		);
+		return <StaticMarker selected={selectedRestaurant} key={restaurant.id} position={position} details={restaurant} setData={markerSetSelectedRestaurant} />;
 	});
 
 	return (
@@ -81,10 +72,7 @@ export default function AdminPage() {
 				<div className="flex w-full h-5/6">
 					<ObjectInfoModal details={selectedRestaurant} />
 					<div className="w-full">
-						<ClickableMap
-							position={position}
-							clickHandler={mapClickHandler}
-						>
+						<ClickableMap position={position} clickHandler={mapClickHandler}>
 							{markerList}
 						</ClickableMap>
 					</div>
