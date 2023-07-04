@@ -13,19 +13,34 @@ export default function Home() {
 	const [position, setPosition] = useState([-8.409518, 115.188919]);
 	const [restaurants, setRestaurants] = useState([]);
 	const [selectedRestaurant, setSelectedRestaurant] = useState({});
+	const [direction, setDirection] = useState(false);
 
 	useEffect(() => {
 		const retrieve = async () => {
-			const restaurantsList = await pb.collection("restaurants").getFullList({
-				sort: "created",
-				$autoCancel: false,
-				expand: "restaurant_services(restaurant).service, restaurant_schedules(restaurant), restaurant_photos(restaurant), menus(restaurant).menu_photos(menu)",
-			});
+			const restaurantsList = await pb
+				.collection("restaurants")
+				.getFullList({
+					sort: "created",
+					$autoCancel: false,
+					expand: "restaurant_services(restaurant).service, restaurant_schedules(restaurant), restaurant_photos(restaurant), menus(restaurant).menu_photos(menu)",
+				});
 			setRestaurants(restaurantsList);
-			console.log(restaurantsList);
 		};
 		retrieve();
 	}, []);
+
+	const directionAction = () => {
+		navigator.geolocation.getCurrentPosition(({ coords }) => {
+			const { latitude, longitude } = coords;
+			setDirection({
+				target: [
+					selectedRestaurant.lattitude,
+					selectedRestaurant.langitude,
+				],
+				current: [latitude, longitude],
+			});
+		});
+	};
 
 	const markerSetSelectedRestaurant = async (restaurant) => {
 		setSelectedRestaurant(restaurant);
@@ -35,7 +50,15 @@ export default function Home() {
 	const markerList = restaurants.map((restaurant) => {
 		const position = [restaurant.lattitude, restaurant.langitude];
 
-		return <StaticMarker selected={selectedRestaurant} key={restaurant.id} position={position} details={restaurant} setData={markerSetSelectedRestaurant} />;
+		return (
+			<StaticMarker
+				selected={selectedRestaurant}
+				key={restaurant.id}
+				position={position}
+				details={restaurant}
+				setData={markerSetSelectedRestaurant}
+			/>
+		);
 	});
 
 	return (
@@ -45,9 +68,14 @@ export default function Home() {
 			</Head>
 			<div className="flex bg-white h-screen w-screen">
 				{/* <SideBar /> */}
-				<ObjectInfoModal details={selectedRestaurant} />
+				<ObjectInfoModal
+					details={selectedRestaurant}
+					directionAction={directionAction}
+				/>
 				<div className="w-full">
-					<Map position={position}>{markerList}</Map>
+					<Map position={position} direction={direction}>
+						{markerList}
+					</Map>
 				</div>
 			</div>
 		</>

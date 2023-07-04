@@ -11,6 +11,7 @@ const nextConfig = {
 			},
 		],
 	},
+	transpilePackages: ["react-leaflet-cluster"],
 };
 
 module.exports = nextConfig;
