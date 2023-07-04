@@ -9,7 +9,7 @@ export default function StaticMarker({ position, details, setData, selected }) {
 	});
 
 	const selectedIcon = new Icon({
-		iconUrl: "https://gis-restoran.vercel.app/selected-icon.png",
+		iconUrl: "https://gis-restoran.vercel.app/icons/selected-icon.png",
 		iconSize: new Point(55, 55),
 	});
 
